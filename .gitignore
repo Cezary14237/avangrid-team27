@@ -1,0 +1,22 @@
+# Hackathon data and customer-level outputs stay local (data-use terms)
+data/
+outputs/
+*.npz
+*.parquet
+*.pkl
+*.xlsx
+*.zip
+
+# Environments and build files
+.venv/
+__pycache__/
+deck/node_modules/
+deck/package-lock.json
+.ipynb_checkpoints/
+
+# The submission deck is uploaded to the organizers separately
+*.pptx
+
+# Contains customer IDs and one customer's hourly load
+deck/deck_data.json
+figures/focal_heat_customers.json
