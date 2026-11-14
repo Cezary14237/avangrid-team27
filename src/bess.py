@@ -28,7 +28,11 @@ DATES = pd.date_range("2025-09-01", periods=365)
 MONTH = DATES.month.values
 TOU_PEAK_MONTHS = np.isin(MONTH, [12, 1, 2, 6, 7, 8])    # NYSEG SC12 has peak pricing in these months
 PRICE_PEAK, PRICE_OFF = 0.16, 0.09                     # NYSEG SC12 12-month avg supply $/kWh (peak, off-peak)
-CAPACITY_VALUE = 100.0                                 # $/kW-yr avoided distribution/generation capacity (assumption)
+# $/kW-yr avoided capacity: NYSEG distribution MCOS $26.02 (system average, secondary, 2025 MCOS study)
+# + generation capacity ~ $48 (NYISO rest-of-state summer price $8/kW-month x 6 months, May 2026).
+# Capacity-constrained areas: $70.61 + $48 = $119 (reported as an upper case, not used in the ranking).
+CAPACITY_VALUE = 74.0
+CAPACITY_VALUE_CONSTRAINED = 119.0
 SERVICE_LIMIT_KVA = 3.0                                # incremental load allowed on 200 A service w/o evaluation
 
 

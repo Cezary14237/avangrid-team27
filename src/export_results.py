@@ -21,7 +21,7 @@ pd.DataFrame(S["segments"]).to_csv(f"{a.results}/segments.csv", index=False)
 pd.Series(S["inventory"], name="homes").rename_axis("technology").to_csv(f"{a.results}/inventory.csv")
 pd.DataFrame(S["validation"]).T.rename_axis("technology").to_csv(f"{a.results}/validation.csv")
 pd.DataFrame(S["peak_flip_curve"], columns=["heat_pump_share", "winter_peak_kw_per_home", "summer_peak_kw_per_home"]).to_csv(f"{a.results}/peak_flip_curve.csv", index=False)
-for f in ["classification_meta.json", "segments_meta.json", "classification_importance_EV.csv", "classification_importance_HP.csv"]:
+for f in ["peak_drivers.json", "classification_meta.json", "segments_meta.json", "classification_importance_EV.csv", "classification_importance_HP.csv"]:
     if os.path.exists(f"{a.out}/{f}"):
         shutil.copy(f"{a.out}/{f}", f"{a.results}/{f}")
 print("results exported to", a.results, sorted(os.listdir(a.results)))

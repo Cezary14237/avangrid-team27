@@ -293,8 +293,8 @@
    "coinc_red": 2.16,
    "shift": 4406.84,
    "tou": 145.63,
-   "cap": 215.7,
-   "val": 361.34,
+   "cap": 159.62,
+   "val": 305.25,
    "flex": 1.09
   },
   {
@@ -306,8 +306,8 @@
    "coinc_red": 1.92,
    "shift": 3447.59,
    "tou": 116.94,
-   "cap": 192.42,
-   "val": 309.36,
+   "cap": 142.39,
+   "val": 259.33,
    "flex": 0.66
   },
   {
@@ -319,8 +319,8 @@
    "coinc_red": 1.83,
    "shift": 2096.19,
    "tou": 76.11,
-   "cap": 183.4,
-   "val": 259.51,
+   "cap": 135.71,
+   "val": 211.83,
    "flex": 0.73
   },
   {
@@ -332,8 +332,8 @@
    "coinc_red": 0.86,
    "shift": 1521.0,
    "tou": 51.48,
-   "cap": 86.49,
-   "val": 137.96,
+   "cap": 64.0,
+   "val": 115.48,
    "flex": 0.18
   },
   {
@@ -345,8 +345,8 @@
    "coinc_red": 0.45,
    "shift": 1115.39,
    "tou": 37.46,
-   "cap": 45.41,
-   "val": 82.87,
+   "cap": 33.6,
+   "val": 71.06,
    "flex": 0.13
   }
  ],
@@ -361,8 +361,8 @@
   "flex_wh_kw": 271.2
  },
  "flex_share_of_system_peak": 0.15905750238385535,
- "value_ratio_tier1_vs_avg": 1.9348483486754795,
- "value_ratio_tier1_vs_tier4": 2.619072428285089,
+ "value_ratio_tier1_vs_avg": 1.9622680605852207,
+ "value_ratio_tier1_vs_tier4": 2.6434079901208887,
  "recommendation_counts": {
   "1 unit (10.08 kWh)": 22119,
   "2 units (20.16 kWh)": 10276,
