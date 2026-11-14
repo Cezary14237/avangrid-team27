@@ -20,3 +20,7 @@ deck/package-lock.json
 # Contains customer IDs and one customer's hourly load
 deck/deck_data.json
 figures/focal_heat_customers.json
+
+# Personal photos and university logo files used only in the local deck build
+figures/photo_*.png
+figures/cornell_logo_*.png
