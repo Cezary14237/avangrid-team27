@@ -35,6 +35,7 @@ steps += [py + ["src/features.py", "--cube", cube, "--out", f"{a.out}/features.p
           py + ["src/segment.py", "--cube", cube, "--features", f"{a.out}/features.pkl", "--classification", f"{a.out}/classification.csv", "--out", f"{a.out}/segments.csv"],
           py + ["src/bess.py", "--cube", cube, "--features", f"{a.out}/features.pkl", "--classification", f"{a.out}/classification.csv", "--segments", f"{a.out}/segments.csv", "--out", f"{a.out}/bess.csv"],
           py + ["src/insights.py", "--cube", cube, "--out", a.out],
+          py + ["src/peak_drivers.py", "--cube", cube, "--out", a.out],
           py + ["src/figures.py", "--cube", cube, "--out", a.out, "--fig", "figures"],
           py + ["src/figures_focal.py", "--cube", cube, "--out", a.out, "--fig", "figures"],
           py + ["src/export_results.py", "--out", a.out, "--results", "results"]]

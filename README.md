@@ -24,9 +24,16 @@ Run on all 34,238 meters in the dataset (33,796 active).
   labeled heat-pump homes (9.3x, 5.8x and 4.2x better than random).
 - **Peak.** 2.35 kW per home (79.4 MW total) on July 2 between 5 and 6 pm at 92°F. All of the 100 highest hours
   are in June to August. The winter peak is 1.70 kW, and it overtakes summer once about 12% of homes have heat pumps.
+- **Two peaks, two causes.** Central-AC homes are 22% of customers but 41% of the summer peak. Homes heated
+  mainly by electricity are 9% of customers but 26% of the winter peak. Central AC adds about 3.2 kW at the summer
+  peak, primary electric heat about 3.7 kW at the winter peak.
 - **Segments.** Peak demand contributors and high-electrification homes are 14% of customers and 28% of peak load.
-- **Batteries.** The top 5% of homes (Tier 1, 1,624 homes) are worth $361 per battery per year against $138 in
+  Solar homes are 6.6x as likely as the average home to own an EV.
+- **Batteries.** The top 5% of homes (Tier 1, 1,624 homes) are worth $305 per battery per year against $115 in
   Tier 4. Tier 1 cuts 3,503 kW at the system peak (4.4%), Tiers 1 and 2 together 9,749 kW (12.3%).
+- **Battery economics.** Fifteen years of peak value is about $4.6k per Tier 1 battery ($6.0k on a constrained
+  feeder) against about $26k installed. Batteries therefore pay where they also avoid a service or feeder upgrade,
+  and demand response is the cheaper default for everyone else.
 - **Electrification.** With a battery, practically every home can add a Level 2 charger without breaking the 3 kVA
   rule (1% without one). For a heat pump it is 82% vs 14%.
 - **Flexibility without new hardware.** About 12.6 MW (16% of the peak), mostly smart thermostats.
@@ -45,6 +52,7 @@ src/
   segment.py      load archetypes and business segments
   bess.py         battery and flexibility simulation, priority index, tiers
   insights.py     summary numbers
+  peak_drivers.py what drives each seasonal peak, solar + battery offer, battery economics
   figures*.py     charts
   export_results.py  copies the aggregate results to results/
 results/          aggregate results (json and csv)
@@ -78,6 +86,14 @@ if you've already loaded the data once. The main output is `outputs/customer_mas
 
 On Windows with Smart App Control turned on, scipy and lightgbm get blocked, so use another machine or WSL.
 
+## Cross-check
+
+Aronya built a second pipeline independently, with different features, thresholds and peak definitions:
+[CrunchyBoba/avangrid-ami-analysi](https://github.com/CrunchyBoba/avangrid-ami-analysi). It lands on the same
+peak hours, the same AC share (69%), the same central-AC share of the summer peak (40%), the same EV count
+(about 740) and the same kind of targeting gain for batteries (about 2x). The program tiers in the deck
+(battery + DR, demand response, solar + battery, monitor) come from her analysis.
+
 ## How it works
 
 **Data.** We keep complete hours only, average the duplicate DST hour and fill gaps from the same hour on the
@@ -105,8 +121,8 @@ load, likely adopter and so on) based on its load at the 100 highest system hour
 **Batteries.** The program battery is 2 × Enphase IQ 10C (20.16 kWh, 7.68 kW, 89.4% round trip), and we keep 10%
 as backup. For every home and every day we simulate:
 - peak shaving: the lowest cap the battery can hold that day, recharging in the quietest hours,
-- discharge in the 3 to 8 pm window, valued at $100 per kW-year at the 100 highest system hours plus TOU savings
-  on NYSEG SC12 prices,
+- discharge in the 3 to 8 pm window, valued at $74 per kW-year at the 100 highest system hours ($26.02 NYSEG
+  distribution marginal cost plus about $48 NYISO generation capacity) plus TOU savings on NYSEG SC12 prices,
 - adding a Level 2 charger or a heat pump and checking the 3 kVA rule with and without the battery.
 
 The Battery Priority Index (0 to 100) weights kW cut at the system peak (30%), customer peak cut (25%), energy
@@ -118,7 +134,8 @@ homes, Tier 2 the next 10%, Tier 3 homes with at least 0.5 kW of flexible load, 
 
 - Hourly data hides short spikes, and the dispatch knows each day's load in advance, so battery results are an
   upper bound.
-- TOU prices are 12-month averages and $100 per kW-year is a placeholder for Avangrid's avoided cost.
+- TOU prices are 12-month averages. Installed battery cost ($13,000 per unit) is one published quote, and we
+  don't know Avangrid's cost of a typical service upgrade, which decides where a battery pays.
 - The labels are "likely", not confirmed. Heat pump vs resistance heat is our weakest call.
 - Hot tub and water heater detection is rough.
 - We had no feeder or transformer IDs, so the ranking is per customer.
@@ -131,3 +148,12 @@ CUBE=data/cube.npz python deck/prep.py
 cd deck && npm install && cd ..
 node deck/build_deck_focal.js
 ```
+
+## Sources
+
+- Avangrid hackathon AMI and weather data (Sep 2025 to Aug 2026), Challenge Statement and Data Dictionary
+- [NYSEG and RG&E 2025 Marginal Cost of Service Study](https://jointutilitiesofny.org/sites/default/files/NYSEG%20RGE%202025%20MCOS.pdf): distribution capacity $26.02 per kW-year, $70.61 in constrained areas
+- [Modo Energy, NYISO capacity prices, May 2026](https://modoenergy.com/research/nyiso-bess-may-2026-reference-price): rest of state $8 per kW-month
+- [NYSEG Energy Storage Solutions program](https://www.nyseg.com/energy-storage-solutions-program): $50 per kW of summer event performance
+- [EnergySage, Enphase IQ Battery 10C review](https://www.energysage.com/energy-storage/best-home-batteries/enphase-iq-battery-10c-review/): about $13,000 installed per unit
+- Elkan and Noto, Learning classifiers from only positive and unlabeled data, KDD 2008
